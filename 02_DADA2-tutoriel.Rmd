@@ -351,7 +351,7 @@ p4tree = plot_tree(ps4, method = "treeonly",
 gridExtra::grid.arrange(nrow = 1, p2tree, p3tree, p4tree)
 ```
 
-
+#préparer le plot d'abondance
 ```{r}
 plot_abundance = function(physeq,title = "",
                           Facet = "Order", Color = "Phylum"){ p1f = subset_taxa(physeq, Phylum %in% c("Firmicutes"))
