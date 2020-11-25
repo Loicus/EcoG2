@@ -1,0 +1,100 @@
+---
+title: "00_package-install"
+output: html_notebook
+---
+
+#Installation Dada2
+```{r package install}
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+
+  install.packages("BiocManager")
+
+BiocManager::install(version = '3.11')
+
+BiocManager::install("dada2", version = "3.11")
+
+```
+
+#installation phyloseq
+```{r}
+BiocManager::install("phyloseq")
+```
+
+
+#installation phangorn et DECIPHER
+```{r}
+BiocManager::install("phangorn")
+BiocManager::install("DECIPHER")
+```
+
+#installation de gridExtra
+```{r}
+install.packages('gridExtra')
+```
+
+#installation XML
+```{r}
+BiocManager::install('XML')
+```
+
+#télécharger fichier installation
+```{bash}
+wget https://cran.r-project.org/src/contrib/Archive/structSSI/structSSI_1.1.1.tar.gz
+```
+
+#installer package téléchargé
+```{r}
+library(devtools)
+install_local("./structSSI_1.1.1.tar.gz")
+```
+
+#installation XML
+```{r}
+install.packages('XML')
+```
+#installation DESeq2
+```{r}
+BiocManager::install('DESeq2')
+```
+
+#installation lattice
+```{r}
+install.packages('lattice')
+```
+
+#installation genomicranges
+```{r}
+install.packages('GenomicRanges')
+```
+
+#installation de plusieurs packages
+```{r}
+install.packages('GenomeInfoDb')
+install.packages('SummarizedExperiment')
+install.packages('MatrixGenerics')
+install.packages('matrixStats')
+```
+
+#installation packages cran 
+```{r}
+.cran_packages <- c( "shiny","miniUI", "caret", "pls", "e1071", "ggplot2", "randomForest", "dplyr", "ggrepel", "nlme", "devtools",
+                  "reshape2", "PMA", "structSSI", "ade4",
+                  "ggnetwork", "intergraph", "scales")
+.github_packages <- c("jfukuyama/phyloseqGraphTest")
+.bioc_packages <- c("genefilter", "impute")
+# Install CRAN packages (if not already installed)
+.inst <- .cran_packages %in% installed.packages()
+if (any(!.inst)){
+  install.packages(.cran_packages[!.inst],repos = "http://cran.rstudio.com/")
+}
+.inst <- .github_packages %in% installed.packages()
+if (any(!.inst)){
+  devtools::install_github(.github_packages[!.inst])
+}
+
+.inst <- .bioc_packages %in% installed.packages()
+if(any(!.inst)){
+ BiocManager::install(.bioc_packages[!.inst])
+}
+```

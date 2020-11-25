@@ -1,0 +1,13 @@
+---
+title: "01_Data-import"
+output: html_notebook
+---
+#dossier pour tuto dada2
+```{bash}
+wget https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.zip
+```
+#dézipper dossier pour tuto dada2
+```{bash}
+unzip miseqsopdata.zip
+```
+
