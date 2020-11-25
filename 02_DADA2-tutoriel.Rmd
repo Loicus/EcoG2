@@ -367,6 +367,7 @@ plot_abundance = function(physeq,title = "",
 }
 ```
 
+#objet ps3ra
 ```{r}
 ps3ra = transform_sample_counts(ps3, function(x){x / sum(x)})
 ```
