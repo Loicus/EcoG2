@@ -325,11 +325,13 @@ length(get_taxa_unique(ps2, taxonomic.rank = "Genus"))
 ps3 = tax_glom(ps2, "Genus", NArm = TRUE)
 ```
 
+#objet ps4
 ```{r}
 h1 = 0.4
 ps4 = tip_glom(ps2, h = h1)
 ```
 
+#préparation des objets pour créer l'arbre
 ```{r}
 multiPlotTitleTextSize = 15
 p2tree = plot_tree(ps2, method = "treeonly",
@@ -344,9 +346,11 @@ p4tree = plot_tree(ps4, method = "treeonly",
   theme(plot.title = element_text(size = multiPlotTitleTextSize))
 ```
 
+#produire l'arbre
 ```{r}
 gridExtra::grid.arrange(nrow = 1, p2tree, p3tree, p4tree)
 ```
+
 
 ```{r}
 plot_abundance = function(physeq,title = "",
