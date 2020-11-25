@@ -537,11 +537,12 @@ ggplot() +
   theme(panel.border = element_rect(color = "#787878", fill = alpha("white", 0)))
 ```
 
-
+#arguments pour ordination
 ```{r}
 ps_ccpna <- ordinate(pslog, "CCA", formula = pslog ~ age_binned + family_relationship)
 ```
 
+#CCpnA biplot bacteries/souris
 ```{r}
 library(ggrepel)
 ps_scores <- vegan::scores(ps_ccpna)
@@ -574,6 +575,7 @@ library('lattice')
 library(ggplot2)
 ```
 
+#diviser les données en ensemble d'apprentissage
 ```{r}
 library(caret)
 sample_data(pslog)$age2 <- cut(sample_data(pslog)$age, c(0, 100, 400))
@@ -587,11 +589,13 @@ plsFit <- train(age ~ ., data = training,
                 method = "pls", preProc = "center")
 ```
 
+#comparer l'age prédit avec age observé
 ```{r}
 plsClasses <- predict(plsFit, newdata = testing)
 table(plsClasses, testing$age)
 ```
 
+#générer des "forest" aléatoires
 ```{r}
 library(randomForest)
 rfFit <- train(age ~ ., data = training, method = "rf",
@@ -600,10 +604,12 @@ rfClasses <- predict(rfFit, newdata = testing)
 table(rfClasses, testing$age)
 ```
 
+#activer vegan
 ```{r}
 library(vegan)
 ```
 
+#pls plot par age
 ```{r}
 pls_biplot <- list("loadings" = loadings(plsFit$finalModel),
                    "scores" = scores(plsFit$finalModel))
@@ -627,10 +633,6 @@ library(ggplot2)
 library(dplyr)
 library(BiocGenerics)
 ```
-#fuction "scores" = 533
-```{r}
-library(vegan)
-```
 
 ```{r}
 ggplot() +
@@ -646,6 +648,7 @@ ggplot() +
   theme(panel.border = element_rect(color = "#787878", fill = alpha("white", 0)))
 ```
 
+#Pcoa par random forest
 ```{r}
 rf_prox <- cmdscale(1 - rfFit$finalModel$proximity) %>%
   data.frame(sample_data(pslog)[inTrain, ])
@@ -662,6 +665,7 @@ ggplot(rf_prox) +
 as.vector(tax_table(ps)[which.max(importance(rfFit$finalModel)), c("Family", "Genus")])
 ```
 
+#histogramme (plus abondant dans random forest)
 ```{r}
 impOtu <- as.vector(otu_table(pslog)[,which.max(importance(rfFit$finalModel))])
 maxImpDF <- data.frame(sample_data(pslog), abund = impOtu)
@@ -670,7 +674,7 @@ ggplot(maxImpDF) +   geom_histogram(aes(x = abund)) +
   labs(x = "Abundance of discriminative bacteria", y = "Number of samples")
 ```
 
-#Creating and plotting graphs
+#creer reseau depuis matrice de dissimilarité de jaccard
 ```{r}
 library("phyloseqGraphTest")
 library("igraph")
@@ -681,7 +685,7 @@ V(net)$id <- sampledata[names(V(net)), "host_subject_id"]
 V(net)$litter <- sampledata[names(V(net)), "family_relationship"]
 ```
 
-##many function errors = 599
+##correction d'erreur (activation de package)
 ```{r}
 library(base)
 library(stats)
@@ -695,10 +699,12 @@ library(dplyr)
 library(permute)
 library(vegan)
 ```
+
 #ligne ajoutée (correction tuto)
 ```{r}
 net_graph <- ggnetwork(net)
 ```
+
 #net remplacé par net_graph
 ```{r}
 ggplot(net_graph, aes(x = x, y = y, xend = xend, yend = yend), layout = "fruchtermanreingold") +
@@ -709,12 +715,8 @@ ggplot(net_graph, aes(x = x, y = y, xend = xend, yend = yend), layout = "fruchte
   guides(col = guide_legend(override.aes = list(size = .5)))
 ```
 
-```{r}
 
-```
-
-
-#linear modeling
+#indice de shannon pour chaque echantillon
 ```{r}
 library("nlme")
 library("reshape2")
@@ -776,6 +778,7 @@ ggplot(ps_samp %>% left_join(new_data)) +
         axis.text.y = element_text(size = 6))
 ```
 
+#activer packages
 ```{r}
 library("reshape2")
 library("DESeq2")
