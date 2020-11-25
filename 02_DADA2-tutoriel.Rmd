@@ -372,29 +372,35 @@ plot_abundance = function(physeq,title = "",
 ps3ra = transform_sample_counts(ps3, function(x){x / sum(x)})
 ```
 
+#plot avant/après transformation
 ```{r}
 plotBefore = plot_abundance(ps3,"")
 plotAfter = plot_abundance(ps3ra,"")
 ```
 
+#combiner les plots
 ```{r}
 gridExtra::grid.arrange(nrow = 2,  plotBefore, plotAfter)
 ```
 
+#definir un rang taxonomique à lactobacillales + plot
 ```{r}
 psOrd = subset_taxa(ps3ra, Order == "Lactobacillales")
 plot_abundance(psOrd, Facet = "Genus", Color = NULL)
 ```
 
+#répartition des souris par age + histogramme
 ```{r}
 qplot(sample_data(ps)$age, geom = "histogram",binwidth=20) + xlab("age")
 ```
 
+#histogramme reads bruts / transformés
 ```{r}
 qplot(log10(rowSums(otu_table(ps))),binwidth=0.2) +
   xlab("Logged counts-per-sample")
 ```
 
+#PcoA BC/unifrac
 ```{r}
 sample_data(ps)$age_binned <- cut(sample_data(ps)$age,
                           breaks = c(0, 100, 200, 400))
@@ -408,26 +414,27 @@ plot_ordination(pslog, out.wuf.log, color = "age_binned") +
   coord_fixed(sqrt(evals[2] / evals[1]))
 ```
 
+#échantillons abérrants
 ```{r}
 rel_abund <- t(apply(otu_table(ps), 1, function(x) x / sum(x)))
 qplot(rel_abund[, 12], geom = "histogram",binwidth=0.05) +
   xlab("Relative abundance")
 ```
 
+#préparer les ordinations sans les valeurs abérrantes
 ```{r}
 outliers <- c("F5D165", "F6D165", "M3D175", "M4D175", "M5D175", "M6D175")
 ps <- prune_samples(!(sample_names(ps) %in% outliers), ps)
 ```
 
+#supprimer les échantillons avec moins de 1000 reads
 ```{r}
 which(!rowSums(otu_table(ps)) > 1000)
-```
-
-```{r}
 ps <- prune_samples(rowSums(otu_table(ps)) > 1000, ps)
 pslog <- transform_sample_counts(ps, function(x) log(1 + x))
 ```
 
+#PcoA BC dissimilarité
 ```{r}
 out.pcoa.log <- ordinate(pslog,  method = "MDS", distance = "bray")
 evals <- out.pcoa.log$values[,1]
@@ -439,6 +446,7 @@ plot_ordination(pslog, out.pcoa.log, color = "age_binned",
 
 ```
 
+#DPCOA
 ```{r}
 out.dpcoa.log <- ordinate(pslog, method = "DPCoA")
 evals <- out.dpcoa.log$eig
@@ -448,11 +456,13 @@ plot_ordination(pslog, out.dpcoa.log, color = "age_binned", label= "SampleID",
   coord_fixed(sqrt(evals[2] / evals[1]))
 ```
 
+#plot taxa
 ```{r}
 plot_ordination(pslog, out.dpcoa.log, type = "species", color = "Phylum") +
   coord_fixed(sqrt(evals[2] / evals[1]))
 ```
 
+#PcoA unifrac
 ```{r}
 out.wuf.log <- ordinate(pslog, method = "PCoA", distance ="wunifrac")
 evals <- out.wuf.log$values$Eigenvalues
@@ -462,16 +472,15 @@ plot_ordination(pslog, out.wuf.log, color = "age_binned",
   labs(col = "Binned Age", shape = "Litter")
 ```
 
+#rangs par abondance
 ```{r}
 abund <- otu_table(pslog)
 abund_ranks <- t(apply(abund, 1, rank))
-```
-
-```{r}
 abund_ranks <- abund_ranks - 329
 abund_ranks[abund_ranks < 1] <- 1
 ```
 
+#plot rang seuil
 ```{r}
 library(dplyr)
 library(reshape2)
@@ -492,6 +501,7 @@ ggplot(abund_df %>%
   scale_color_brewer(palette = "Set2")
 ```
 
+#PCA
 ```{r}
 library(ade4)
 ranks_pca <- dudi.pca(abund_ranks, scannf = F, nf = 3)
@@ -512,7 +522,6 @@ row_scores <- row_scores %>%
 col_scores <- col_scores %>%
   left_join(tax)
 ```
-
 ```{r}
 evals_prop <- 100 * (ranks_pca$eig / sum(ranks_pca$eig))
 ggplot() +
@@ -527,6 +536,7 @@ ggplot() +
   coord_fixed(sqrt(ranks_pca$eig[2] / ranks_pca$eig[1])) +
   theme(panel.border = element_rect(color = "#787878", fill = alpha("white", 0)))
 ```
+
 
 ```{r}
 ps_ccpna <- ordinate(pslog, "CCA", formula = pslog ~ age_binned + family_relationship)
