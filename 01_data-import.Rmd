@@ -11,3 +11,18 @@ wget https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.zip
 unzip miseqsopdata.zip
 ```
 
+#télécharger données silva
+```{bash}
+wget https://zenodo.org/record/3986799/files/silva_nr99_v138_train_set.fa.gz?
+```
+
+#Importer les données "species" RefSeq
+```{bash}
+wget https://zenodo.org/record/2658728/files/RefSeq-RDP_dada2_assignment_species.fa.gz?
+```
+
+# importer les données "species" silva
+```{bash}
+wget https://zenodo.org/record/3986799/files/silva_species_assignment_v138.fa.gz?
+```
+
