@@ -341,7 +341,7 @@ out.wuf.log <- ordinate(pslog, method = "MDS", distance = "wunifrac")
 ```
 
     ## Warning in UniFrac(physeq, weighted = TRUE, ...): Randomly assigning root as --
-    ## GCAAGCGTTATCCGGAATTATTGGGTGTAAAGGGTGCGTAGACGGGATAACAAGTTGGTTGTGAAACCCCTCGGCTCAACTGAGGAACTGCAACCAAAACTATTATTCTTGAGTGCAGGAGAGGAAAGTGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAAGAACACCGGTGGCGAAGGCGACTTTCTGGACTGTAACTGACGTTGAGGCACGAAAGTGTGGGGAG
+    ## GCAAGCGTTATCCGGATTTACTGGGTGTAAAGGGAGCGCAGGCGGCAGGATGAGTCTGATGTGAAAACCCGCGGCTCAACCACGGGATTGCATTGGAAACTGTCCAGCTAGAGTGTCGGAGAGGTAAGCGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAGGAACACCAGTGGCGAAGGCGGCTTACTGGACGATGACTGACGCTGAGGCTCGAAAGCGTGGGGAG
     ## -- in the phylogenetic tree in the data you provided.
 
 ``` r
@@ -353,9 +353,12 @@ plot_ordination(pslog, out.wuf.log, color = "age_binned") +
 
 ![](03_phyloseq-tuto_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
-<span style="color:blue">Cette ordination nous montre la dissimilarité
-des log abondance par age (jeune, moyen, vieux) et montre des valeurs
-abérantes.</span>
+<span style="color:blue">Cette ordination a été produite à partir d’une
+matrice de dissimilarité et montre la distance des communautés
+bactérienne des échantillons et marque l’age des souris d’ou
+proviennent ces échantillons. On remarque certaines valeurs abérantes
+chez quelques échantillons (forte distance des autres
+échantillons).</span>
 
 ## <span style="color:green">échantillons abérrants</span>
 
@@ -406,7 +409,11 @@ plot_ordination(pslog, out.pcoa.log, color = "age_binned",
 
 <span style="color:blue">Cette PcoA nous montre la dissimilarité (BC)
 entre les différents échantillons et laisse apparaitre une tendance en
-fonction de l’age.</span>
+fonction de l’age: nous pouvons voir la formation de 2 clusters, le
+premier composé de souris jeunes et le second de souris “mid” et
+vieilles. La lignée ne semble pas impacter la composition des
+échantillons d’après cette représentation. Le manque d’échantillon
+provenant de souris vieilles est à déplorer.</span>
 
 ## <span style="color:green">DPCOA</span>
 
@@ -445,7 +452,7 @@ out.wuf.log <- ordinate(pslog, method = "PCoA", distance ="wunifrac")
 ```
 
     ## Warning in UniFrac(physeq, weighted = TRUE, ...): Randomly assigning root as --
-    ## GCAAGCGTTATCCGGATTTACTGGGTGTAAAGGGAGCGTAGGCGGCAGTGCAAGTCAGAAGTGAAAGCCCAAGGCTCAACCATGGGACTGCTTTTGAAACTGTACAGCTAGATTGCAGGAGAGGTAAGTGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAGGAACACCAGTGGCGAAGGCGGCTTACTGGACTGTAAATGACGCTGAGGCTCGAAAGCGTGGGGAG
+    ## GCAAGCGTTATCCGGATTTATTGGGCGTAAAGCGAGCGCAGGCGGTTGCTTAGGTCTGATGTGAAAGCCTTCGGCTTAACCGAAGAAGTGCATCGGAAACCGGGCAACTTGAGTGCAGAAGAGGACAGTGGAACTCCATGTGTAGCGGTGGAATGCGTAGATATATGGAAGAACACCAGTGGCGAAGGCGGCTGTCTGGTCTGCAACTGACGCTGAGGCTCGAAAGCATGGGTAG
     ## -- in the phylogenetic tree in the data you provided.
 
 ``` r
@@ -628,8 +635,11 @@ ggplot() +
 
 ![](03_phyloseq-tuto_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
-<span style="color:blue">Ce CCA montre la corrélation entre la présence
-des 4 taxa les plus abondants et l’age des souris.</span>
+<span style="color:blue">Ce CCA montre la corrélation entre la
+répartition des 4 taxa les plus abodant dans les 2 lignées de souris et
+marque une différence de répartition dans ces 2 lignées. Le lignase
+serait peut être un facteur influencant la composition des communauté
+bactérienne au sein des souris..</span>
 
 ``` r
 library('lattice')
@@ -660,8 +670,8 @@ table(plsClasses, testing$age)
 
     ##            
     ## plsClasses  (0,100] (100,400]
-    ##   (0,100]        60         0
-    ##   (100,400]       4        43
+    ##   (0,100]        62         0
+    ##   (100,400]       4        44
 
 ### <span style="color:green">générer des “forest” aléatoires</span>
 
@@ -693,8 +703,8 @@ table(rfClasses, testing$age)
 
     ##            
     ## rfClasses   (0,100] (100,400]
-    ##   (0,100]        60         6
-    ##   (100,400]       4        37
+    ##   (0,100]        65         0
+    ##   (100,400]       1        44
 
     ## Loading required package: permute
 
@@ -781,8 +791,9 @@ ggplot() +
 
 <span style="color:blue">Ici, nous avons une représentation des liens
 qui existent entre la population bactérienne et l’age des souris (de 0 à
-100 et de 100 à 400). Cette représentation marque encore une différence
-liée à l’age.</span>
+100 et de 100 à 400). Cette représentation marque la corrélation entre
+la composition des échantillons et les facteurs liés à l’age des souris,
+différente d’un age à l’autre.</span>
 
 ## <span style="color:green">Pcoa par random forest</span>
 
@@ -804,7 +815,10 @@ ggplot(rf_prox) +
 chaque échantillon en fonction de leur récurence par paire dans la
 random forest. On remarque 2 clusters principaux marqué par l’age des
 souris (0 à 100 et 100 à 200). Les echantillons 200 à 400 sont
-difficilement perceptible du au choix des couleurs de cette PCoA.</span>
+difficilement perceptible du au choix des couleurs de cette PCoA et au
+manque d’échantillon disponible pour la classe “old200”. Cette figure
+montre l’implication du facteur “age” dans la composition des
+communautés bactériennes chez la souri.</span>
 
 ``` r
 as.vector(tax_table(ps)[which.max(importance(rfFit$finalModel)), c("Family", "Genus")])
@@ -959,7 +973,12 @@ ggplot(net_graph, aes(x = x, y = y, xend = xend, yend = yend), layout = "fruchte
 échantillons en fonction de la souri d’où ils proviennent (couleur) et
 de leur lignées (forme).Cette représentation a été faite à partir d’une
 matrice de dissimilarité de Jaccard. On voit que la lignée est un
-facteur influencant les liens entre les échantillons.</span>
+facteur influencant les liens entre les échantillons. Cette
+représentation ne met pas en avant le facteur “age” et permet
+d’identifier d’autres facteurs influencant la composition des
+communautés bactériennes comme la lignée. On voit logiquement que les
+echantillons provenant des mêmes souris sont proches (de manière
+générale).</span>
 
 ## <span style="color:red">Représentations linéaire.</span>
 
@@ -1394,3 +1413,9 @@ type. Cette représentation montre que le génotype (KO ou WT) n’influence
 pas la fonctionnalité. En revanche elle est influencé par la diet (ST et
 PD) car nous pouvons voir la formation de cluster en fonction de la
 diet. </span>
+
+<span style="color:blue">Toutes ces représentations nous ont permis de
+constater qu’il pouvait y avoir des biais de lecture des données.
+Souvent, une seule représentation n’est pas suffisante pour comprendre
+et interpréter l’ensemble des données. C’est pourquoi il est nécessaire
+de traiter et “faire parler” les données de plusieurs manières.</span>
