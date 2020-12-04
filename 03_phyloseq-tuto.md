@@ -341,7 +341,7 @@ out.wuf.log <- ordinate(pslog, method = "MDS", distance = "wunifrac")
 ```
 
     ## Warning in UniFrac(physeq, weighted = TRUE, ...): Randomly assigning root as --
-    ## GCAAGCGTTATCCGGATTTACTGGGTGTAAAGGGAGCGCAGGCGGCAGGATGAGTCTGATGTGAAAACCCGCGGCTCAACCACGGGATTGCATTGGAAACTGTCCAGCTAGAGTGTCGGAGAGGTAAGCGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAGGAACACCAGTGGCGAAGGCGGCTTACTGGACGATGACTGACGCTGAGGCTCGAAAGCGTGGGGAG
+    ## GCAAGCGTTATCCGGAATTACTGGGTGTAAAGGGTGAGTAGGCGGCATGGTAAGCCAGATGTGAAAGCCTTGGGCTTAACCCAAGGATTGCATTTGGAACTATCAAGCTAGAGTACAGGAGAGGAAAGCGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAAGAACACCAGTGGCGAAGGCGGCTTTCTGGACTGAAACTGACGCTGAGGCACGAAAGCGTGGGGAG
     ## -- in the phylogenetic tree in the data you provided.
 
 ``` r
@@ -452,7 +452,7 @@ out.wuf.log <- ordinate(pslog, method = "PCoA", distance ="wunifrac")
 ```
 
     ## Warning in UniFrac(physeq, weighted = TRUE, ...): Randomly assigning root as --
-    ## GCAAGCGTTATCCGGATTTATTGGGCGTAAAGCGAGCGCAGGCGGTTGCTTAGGTCTGATGTGAAAGCCTTCGGCTTAACCGAAGAAGTGCATCGGAAACCGGGCAACTTGAGTGCAGAAGAGGACAGTGGAACTCCATGTGTAGCGGTGGAATGCGTAGATATATGGAAGAACACCAGTGGCGAAGGCGGCTGTCTGGTCTGCAACTGACGCTGAGGCTCGAAAGCATGGGTAG
+    ## CCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGAGCGTAGGTGGATTGTTAAGTCAGTTGTGAAAGTTTGCGGCTCAACCGTAAAATTGCAGTTGAAACTGGCAGTCTTGAGTACAGTAGAGGTGGGCGGAATTCGTGGTGTAGCGGTGAAATGCTTAGATATCACGAAGAACTCCGATTGCGAAGGCAGCTCACTGGACTGCAACTGACACTGATGCTCGAAAGTGTGGGTAT
     ## -- in the phylogenetic tree in the data you provided.
 
 ``` r
@@ -528,7 +528,7 @@ ggplot(abund_df %>%
 
 <span style="color:blue">Ce graphique montre l’abondance des différents
 échantillons au dessus de la valeur seuil. On remarque une répartition
-armonieuse et stable entre les différents échantillons.</span>
+armonieuse entre les différents échantillons.</span>
 
 ## <span style="color:green">PCA</span>
 
@@ -670,8 +670,8 @@ table(plsClasses, testing$age)
 
     ##            
     ## plsClasses  (0,100] (100,400]
-    ##   (0,100]        62         0
-    ##   (100,400]       4        44
+    ##   (0,100]        60         4
+    ##   (100,400]       1        40
 
 ### <span style="color:green">générer des “forest” aléatoires</span>
 
@@ -703,8 +703,8 @@ table(rfClasses, testing$age)
 
     ##            
     ## rfClasses   (0,100] (100,400]
-    ##   (0,100]        65         0
-    ##   (100,400]       1        44
+    ##   (0,100]        60         6
+    ##   (100,400]       1        38
 
     ## Loading required package: permute
 
@@ -824,7 +824,7 @@ communautés bactériennes chez la souri.</span>
 as.vector(tax_table(ps)[which.max(importance(rfFit$finalModel)), c("Family", "Genus")])
 ```
 
-    ## [1] "Lachnospiraceae" NA
+    ## [1] "Lachnospiraceae" "Roseburia"
 
 ## <span style="color:green">histogramme (plus abondant)</span>
 
@@ -841,8 +841,10 @@ ggplot(maxImpDF) +   geom_histogram(aes(x = abund)) +
 ![](03_phyloseq-tuto_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
 <span style="color:blue">Cet histogramme montre l’abondance dans les
-échantillons des bactéries surreprésentées dans la random forest et
-montre une répartition non homogène en fonction de l’âge. </span>
+échantillons des bactéries surreprésentées et montre une répartition
+non homogène en fonction de l’âge. La random forest permet de faire le
+lien entre les variables explicatives et les variables à
+expliquer.</span>
 
     ## 
     ## Attaching package: 'phangorn'

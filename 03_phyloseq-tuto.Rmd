@@ -330,7 +330,7 @@ ggplot(abund_df %>%
   scale_color_brewer(palette = "Set2")
 ```
 
-<span style="color:blue">Ce graphique montre l'abondance des différents échantillons au dessus de la valeur seuil. On remarque une répartition armonieuse et stable entre les différents échantillons.</span>
+<span style="color:blue">Ce graphique montre l'abondance des différents échantillons au dessus de la valeur seuil. On remarque une répartition armonieuse entre les différents échantillons.</span>
 
 
 ## <span style="color:green">PCA</span>
@@ -526,7 +526,7 @@ ggplot(maxImpDF) +   geom_histogram(aes(x = abund)) +
   labs(x = "Abundance of discriminative bacteria", y = "Number of samples")
 ```
 
-<span style="color:blue">Cet histogramme montre l'abondance dans les échantillons des bactéries surreprésentées dans la random forest et montre une répartition non homogène en fonction de l'âge. </span>
+<span style="color:blue">Cet histogramme montre l'abondance dans les échantillons des bactéries surreprésentées et montre une répartition non homogène en fonction de l'âge. La random forest permet de faire le lien entre les variables explicatives et les variables à expliquer.</span>
 
 
 ```{r, echo=FALSE}
